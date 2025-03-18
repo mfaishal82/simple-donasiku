@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DonationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/user/{username}', [DonationController::class, 'index'])->name('donation.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
