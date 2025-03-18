@@ -17,9 +17,20 @@
         <div class="min-h-screen">
             <div class="flex min-h-screen items-center bg-gray-100 justify-center p-4">
                 <div class="container mx-auto max-w-2xl  rounded-lg p-8">
-                    <form action="" method="post" class="w-full">
+                    <form action="{{ route('donations.store') }}" method="post" class="w-full">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        @if ($errors->any())
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                <strong class="font-bold">Terjadi kesalahan!</strong>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+
+                            </div>
+                        @endif
                         <div class="space-y-2">
                             <div class="border-b border-gray-900/10 pb-12">
                                 <div class="flex flex-col w-full justify-between items-start gap-2">
@@ -54,13 +65,13 @@
                                         </div>
                                         <div class="sm:col-span-full">
                                             <label for="amount" class="block text-sm font-medium text-gray-900">Nominal</label>
-                                            <input type="number" min="1000" name="amount" id="amount" required placeholder="Nominal" 
+                                            <input type="number" min="100" name="amount" id="amount" required placeholder="Nominal" 
                                                 class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
                                         <div class="sm:col-span-full">
                                             <label for="message" class="block text-sm font-medium text-gray-900">Pesan</label>
-                                            <textarea type="number" min="1000" name="message" id="message" required placeholder="Pesan" 
+                                            <textarea min="1000" name="message" id="message" required placeholder="Pesan" 
                                                 class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             ></textarea>
                                         </div>
