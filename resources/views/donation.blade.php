@@ -66,13 +66,13 @@
                                         <div class="sm:col-span-full">
                                             <label for="amount" class="block text-sm font-medium text-gray-900">Nominal</label>
                                             <input type="number" min="100" name="amount" id="amount" required placeholder="Nominal" 
-                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="9999"
                                             />
                                         </div>
                                         <div class="sm:col-span-full">
                                             <label for="message" class="block text-sm font-medium text-gray-900">Pesan</label>
                                             <textarea min="1000" name="message" id="message" required placeholder="Pesan" 
-                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="test"
                                             ></textarea>
                                         </div>
                                     </div>
