@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DonationInvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Donation;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Xendit\Configuration;
 use Xendit\Invoice\CreateInvoiceRequest;
 use Xendit\Invoice\InvoiceApi;
@@ -63,7 +65,7 @@ class DonationController extends Controller
                 'payer_email' => $request->email,
                 'amount' => $request->amount,
                 'items' => [$invoiceItems],
-                'invoice_duration' => 24,
+                'invoice_duration' => 172800,
                 'success_redirect_url' => route('donations.success', ['id' => $donation->id]),
             ]);
 
@@ -83,6 +85,8 @@ class DonationController extends Controller
             DB::commit();
 
             // Log::info('Pembayaran berhasil dibuat', ['payment_id' => $payment->id]);
+
+            Mail::to($request->email)->queue(new DonationInvoiceMail($donation, $payment));
 
             return redirect($payment->payment_url);
 
@@ -125,6 +129,10 @@ class DonationController extends Controller
                 'status' => 'complete',
             ]);
         }
+
+        Mail::to($donation->email)->queue(new DonationInvoiceMail($donation, $payment));
+
+        return response()->json(['message' => 'Payment updated'], 200);
     }
 
     public function success($id) {
