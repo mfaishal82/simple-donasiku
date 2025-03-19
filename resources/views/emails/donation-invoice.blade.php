@@ -11,7 +11,7 @@ Terima kasih atas donasi Anda! Donasi untuk {{ $donation->user->name }} telah be
 
 Silakan klik tombol  di bawah ini untuk melihat detail donasi Anda.
 <x-mail::button :url="$payment['payment_url']">
-Button Text
+Cek Transaksi
 </x-mail::button>
 
 Thanks,<br>
