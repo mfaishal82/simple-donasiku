@@ -13,7 +13,7 @@
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans">
+    <body class="font-sans antialiased">
         <div class="min-h-screen">
             <div class="flex min-h-screen items-center bg-gray-100 justify-center p-4">
                 <div class="container mx-auto max-w-2xl  rounded-lg p-8">
@@ -36,7 +36,7 @@
                                 <div class="flex flex-col w-full justify-between items-start gap-2">
                                     <div class="flex justify-between gap-x-5 items-center w-full">
                                         <h2 class="text-base font-semibold text-gray-900">
-                                            Kamu akan mengirimkan dukungan pada {{ $user->username }}
+                                            Kamu akan mengirimkan dukungan pada <span class="italic text-indigo-400">{{ $user->username }}</span>
                                         </h2>
 
                                         @guest
@@ -66,13 +66,13 @@
                                         <div class="sm:col-span-full">
                                             <label for="amount" class="block text-sm font-medium text-gray-900">Nominal</label>
                                             <input type="number" min="100" name="amount" id="amount" required placeholder="Nominal" 
-                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="9999"
+                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
                                         <div class="sm:col-span-full">
                                             <label for="message" class="block text-sm font-medium text-gray-900">Pesan</label>
-                                            <textarea min="1000" name="message" id="message" required placeholder="Pesan" 
-                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="test"
+                                            <textarea name="message" id="message" required placeholder="Pesan" 
+                                                class="block w-full rounded-md border-b py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             ></textarea>
                                         </div>
                                     </div>

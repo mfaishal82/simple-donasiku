@@ -39,7 +39,7 @@ class DonationController extends Controller
         DB::beginTransaction();
 
         try {
-            Log::info('Memulai proses pembuatan donasi', ['user_id' => $request->user_id]);
+            // Log::info('Memulai proses pembuatan donasi', ['user_id' => $request->user_id]);
 
             $donation = Donation::create([
                 'user_id' => $request->user_id,
@@ -50,7 +50,7 @@ class DonationController extends Controller
                 'status' => 'pending',
             ]);
 
-            Log::info('Donasi berhasil dibuat', ['donation_id' => $donation->id]);
+            // Log::info( 'Donasi berhasil dibuat', ['donation_id' => $donation->id]);
 
             $invoiceItems = new InvoiceItem([
                 'name' => 'Donation',
@@ -70,7 +70,7 @@ class DonationController extends Controller
             $api = new InvoiceApi();
             $generateInvoice = $api->createInvoice($createInvoice);
 
-            Log::info('Invoice berhasil dibuat', ['invoice_id' => $generateInvoice['id']]);
+            // Log::info('Invoice berhasil dibuat', ['invoice_id' => $generateInvoice['id']]);
 
             $payment = Payment::create([
                 'donation_id' => $donation->id,
@@ -82,7 +82,7 @@ class DonationController extends Controller
 
             DB::commit();
 
-            Log::info('Pembayaran berhasil dibuat', ['payment_id' => $payment->id]);
+            // Log::info('Pembayaran berhasil dibuat', ['payment_id' => $payment->id]);
 
             return redirect($payment->payment_url);
 
@@ -91,5 +91,44 @@ class DonationController extends Controller
             DB::rollBack();
             return back()->with('error', 'Failed to create donation');
         }
+    }
+
+    public function callbackXendit(Request $request){
+
+        // Log::info('Callback received', ['request' => $request->all()]);
+        $getToken = $request->header('x-callback-token');
+        $callbackToken = env('XENDIT_CALLBACK_TOKEN');
+
+        // Log::info('Headers received', [
+        //     'x-callback-token' => $getToken,
+        //     'XENDIT_CALLBACK_TOKEN' => $callbackToken
+        // ]);
+
+        if(!$callbackToken || $getToken !== $callbackToken){
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $payment = Payment::where('payment_id', $request->id)->first();
+
+        if (!$payment) {
+            Log::error('Payment not found', ['payment_id' => $request->id]);
+            return response()->json(['message' => 'Payment not found'], 404);
+        }
+
+        $payment->update([
+            'status' => $request->status === 'PAID' ? 'complete' : 'failed',
+        ]);
+
+        if($request->status === 'PAID'){
+            $donation = Donation::find($payment->donation_id);
+            $donation->update([
+                'status' => 'complete',
+            ]);
+        }
+    }
+
+    public function success($id) {
+        $donation = Donation::find($id);
+        return view('success', compact('donation'));
     }
 }
