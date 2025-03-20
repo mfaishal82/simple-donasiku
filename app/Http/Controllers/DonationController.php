@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DonationReceived;
 use App\Mail\DonationInvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -115,21 +116,24 @@ class DonationController extends Controller
         $payment = Payment::where('payment_id', $request->id)->first();
 
         if (!$payment) {
-            Log::error('Payment not found', ['payment_id' => $request->id]);
+            // Log::error('Payment not found', ['payment_id' => $request->id]);
             return response()->json(['message' => 'Payment not found'], 404);
         }
 
         $payment->update([
-            'status' => $request->status === 'PAID' ? 'complete' : 'failed',
+            'status' => $request->status === 'PAID' ? 'completed' : 'failed',
         ]);
 
         if($request->status === 'PAID'){
-            $donation = Donation::find($payment->donation_id);
+            $donation = Donation::where('id', $payment->donation_id)->first();
+            Log::info('Donation details', ['donation' => $donation]);
             $donation->update([
-                'status' => 'complete',
+                'status' => 'completed',
             ]);
-        }
 
+            event(new DonationReceived($donation));
+        }
+        
         Mail::to($donation->email)->queue(new DonationInvoiceMail($donation, $payment));
 
         return response()->json(['message' => 'Payment updated'], 200);
