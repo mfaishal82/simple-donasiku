@@ -1,37 +1,30 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Dashboard') }}
+            </h2>
+            {{-- <button id="theme-toggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-md">🌙 Dark Mode</button> --}}
+        </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6 p-2">
-                <h3 class="text-lg font-semibold text-gray-400">Total Donasi yang Diterima</h3>
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-400">Total Donasi yang Diterima</h3>
                 <p class="text-2xl font-bold text-green-600">Rp 
-                    <span id="total-donation"> {{ Auth::check() ? number_format(Auth::user()->donations()->where(
-                        'status', 'completed')->sum('amount'), 0, ',', '.') : '0' 
-                    }}
-                    </span>
+                    <span id="total-donation"> {{ Auth::check() ? number_format(Auth::user()->donations()->where('status', 'completed')->sum('amount'), 0, ',', '.') : '0' }} </span>
 
                     <span id="donation-update" class="text-xl font-semibold text-green-500 transition-opacity opacity-0"></span>
                 </p>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6 p-2">
-                <label for="profile-url" class="block text-sm font-md text-gray-700 dark:text-white py-2 px-2">Profile URL</label>
-                <div class="flex ml-1">
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg mt-6 p-6">
+                <label for="profile-url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Profile URL</label>
+                <div class="flex mt-2">
                     <input type="text" id="profile-url" value="{{ url('user/' . Auth::user()->username) }}"
-                        class="form-input rounded-md shadow-sm mt-1 block w-full border-gray-300" readonly />
-                    <button onclick="copyProfileUrl()"
-                        class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        class="form-input rounded-md shadow-sm w-full border-gray-300 dark:bg-gray-700 dark:text-gray-200" readonly />
+                    <button onclick="copyProfileUrl()" class="ml-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         Copy
                     </button>
                 </div>
@@ -44,10 +37,26 @@
             function copyProfileUrl() {
                 const profileUrl = document.getElementById('profile-url');
                 profileUrl.select();
-                profileUrl.setSelectionRange(0, 99999);
                 navigator.clipboard.writeText(profileUrl.value);
                 alert('Copied to clipboard');
             }
+
+            // document.getElementById('theme-toggle').addEventListener('click', function() {
+            //     if (document.documentElement.classList.contains('dark')) {
+            //         document.documentElement.classList.remove('dark');
+            //         localStorage.setItem('theme', 'light');
+            //         this.innerText = '🌙 Dark Mode';
+            //     } else {
+            //         document.documentElement.classList.add('dark');
+            //         localStorage.setItem('theme', 'dark');
+            //         this.innerText = '☀️ Light Mode';
+            //     }
+            // });
+
+            // if (localStorage.getItem('theme') === 'dark') {
+            //     document.documentElement.classList.add('dark');
+            //     document.getElementById('theme-toggle').innerText = '☀️ Light Mode';
+            // }
         </script>
     @endpush
 
