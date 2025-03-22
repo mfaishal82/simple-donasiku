@@ -33,6 +33,8 @@ To get started with the project, follow these steps:
 4. Generate application key: `php artisan key:generate`
 5. Run migrations: `php artisan migrate`
 6. Start the development server: `php artisan serve`
+7. Start the queue worker: `php artisan queue:work`
+8. Start the WebSocket server: `php artisan reverb:start`
 
 #### Realtime notification
 <img src="./public/images/notif.png">
